@@ -1,4 +1,4 @@
-name: pymbn_env
+name: pymbn
 channels:
   - conda-forge
   - defaults

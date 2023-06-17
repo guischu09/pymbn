@@ -85,8 +85,6 @@ def small_worldness(network: np.ndarray, sw_type: str = "sigma") -> float:
         sw = (c / c_r) / (l / l_r)
     elif sw_type == "omega":
         raise NotImplementedError
-        # c_l = compute_clustering_coef_lattice(network)
-        # sw = (l / l_r) - (c / c_l)
     return sw
 
 

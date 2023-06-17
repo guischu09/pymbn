@@ -1,12 +1,13 @@
-# from .ui_parser import TkInput as DataParser
 from typing import List, NewType, Tuple
 
 import numpy as np
 import pandas as pd
-from imblearn.over_sampling import ADASYN
 
 from .base_classes import Setup
 from .ui_parser import TkInput as DataParser
+
+# from imblearn.over_sampling import ADASYN
+
 
 PetData = NewType("PetData", List[Tuple[np.array, str]])
 
@@ -31,11 +32,13 @@ def process_data(data_path: str, setup: Setup) -> PetData:
     return data
 
 
-def process_undersampled(data_path: str):
+# TODO
+def process_undersampled(data_path: str) -> PetData:
     pass
 
 
-def process_adasyn(data_path: str):
+# TODO
+def process_adasyn(data_path: str) -> PetData:
     # imbalanced_data = process_imbalanced(data_path)
     # adasyn = ADASYN(random_state=42)
     pass

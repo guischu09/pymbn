@@ -69,7 +69,7 @@ class TkInput(InputHelper):
         elif os.path.exists(filepath):
             return True
         else:
-            raise TypeError(f"File {filepath} does not exist. Please double check if input path to file is correct.")
+            raise TypeError(f"File {filepath} does not exist. Please double check if input path is correct.")
 
 
 class ManualInput(InputHelper):
@@ -104,7 +104,7 @@ class ManualInput(InputHelper):
 
     @staticmethod
     def is_valid_input(filepath: str):
-        if not filepath:  
+        if not filepath:
             print("Exiting program.")
             sys.exit(0)
         elif os.path.exists(filepath):
@@ -140,10 +140,10 @@ class ManualSetup(SetupHelper):
         )
 
 
-#TODO write a class to parse setup parameters from a GUI (tkinter, or pyqt)
+# TODO write a class to parse setup parameters from a GUI (tkinter, or pyqt)
 class TkSetup(SetupHelper):
     def __init__(self) -> None:
         self.setup = self.get_parameters()
+
     def get_parameters(self) -> Setup:
         pass
-    

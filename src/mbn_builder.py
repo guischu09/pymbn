@@ -54,10 +54,12 @@ def mean_mbn(ms: MSComputations):
     return weights_representative, pval_representative
 
 
+# TODO
 def mode_mbn(ms_data: MSComputations):
     pass
 
 
+# TODO
 def geodesic_mbn(ms: MSComputations):
     # data info:
     n_row, n_samples, n_class = np.shape(ms.weights_noncorrected)

@@ -19,7 +19,7 @@ def main():
     group_networks, multiple_networks = build_network(data, setup)
 
     # Graph measures
-    df = compute_graph_measures(multiple_networks, data, setup)
+    compute_graph_measures(multiple_networks, data, setup)
 
     # Make plots
     plotter = NetworkPlotter(
