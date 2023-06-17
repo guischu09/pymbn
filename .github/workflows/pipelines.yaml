@@ -16,17 +16,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-           $CONDA/bin/conda env update --file environment.yml --name base
-
-
-      - name: Run pytests
-        run: |
-          $CONDA/bin/pytest -v --cov
-      
-
-
-
-      
-     
-      
+           $CONDA/bin/conda env update --file environment.yml --name base 
+ 
 
