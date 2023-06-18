@@ -17,4 +17,11 @@ jobs:
         # $CONDA is an environment variable pointing to the root of the miniconda directory
         echo $CONDA/bin >> $GITHUB_PATH
         ls
+        pwd
+    - name: Create conda enviroment
+      run: |
+         $CONDA/bin/conda env update --file environment.yml --name base
+      
+      
+    
 
