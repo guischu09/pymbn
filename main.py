@@ -4,7 +4,7 @@ from src.data_importer import data_import
 from src.mbn_builder import build_network
 from src.mbn_measures import compute_graph_measures
 from src.mbn_plot import NetworkPlotter
-from src.ui_parser import ManualSetup as SetupParser
+from src.ui_parser import QTSetup as SetupParser
 
 
 def main():

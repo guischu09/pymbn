@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import filedialog
 
 from .base_classes import InputHelper, Setup, SetupHelper
+from .qt_gui import QTGUI
 
 
 class TkInput(InputHelper):
@@ -143,6 +144,15 @@ class ManualSetup(SetupHelper):
 # TODO write a class to parse setup parameters from a GUI (tkinter, or pyqt)
 class TkSetup(SetupHelper):
     def __init__(self) -> None:
+        self.setup = self.get_parameters()
+
+    def get_parameters(self) -> Setup:
+        pass
+
+
+class QTSetup(SetupHelper):
+    def __init__(self) -> None:
+        self.qt_gui = QTGUI.start_gui()
         self.setup = self.get_parameters()
 
     def get_parameters(self) -> Setup:

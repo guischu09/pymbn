@@ -47,10 +47,12 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+*.pyc
 
 # cache
 .vscode/
-__pycache__/
+*.cpython-*.pyc
+src/__pycache__/
 
 # pytest
 .pytest_cache
