@@ -135,7 +135,7 @@ class ManualSetup(SetupHelper):
             mbn_method="ms_scheme",  # "ms_scheme", "conventional"
             probability_treshold=0.95,
             n_samples=100,
-            random_type="bootstrap",
+            sampling_type="bootstrap",
             interactive=True,
             seed=13,
         )
@@ -154,6 +154,7 @@ class QTSetup(SetupHelper):
     def __init__(self) -> None:
         self.qt_gui = QTGUI.start_gui()
         self.setup = self.get_parameters()
+        print(self.setup)
 
     def get_parameters(self) -> Setup:
-        pass
+        return self.qt_gui.setup

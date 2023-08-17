@@ -24,23 +24,24 @@ class InputHelper(ABC):
 
 @dataclass
 class Setup:
+    mbn_method: str
     alpha: float
     theta: float
     threshold: float
     weights: str
     correction_type: str
+    sampling_type: str
+    n_samples: int
     criteria_representation: str
     data_balance: str
     n_samples_measures: int
     plot_3d: bool
-    brain_type: str
-    which_plot: str
-    output_format: str
-    mbn_method: str
-    probability_treshold: float
-    n_samples: int
-    random_type: str
     interactive: bool
+    brain_type: str
+    plot_heatmap: bool
+    plot_circle: bool
+    output_format: str
+    probability_treshold: float
     seed: int
 
 

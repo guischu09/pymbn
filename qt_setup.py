@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class QT_GUI(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(789, 743)
@@ -405,7 +405,7 @@ class Ui_MainWindow(object):
     def ok_button_clicked(self):
         # Set parameters
         # QtWidgets.QApplication.quit()
-        pass
+        return
 
     def get_mbn_construction_method_value(self):
         return self.comboBox_7.currentText()
@@ -473,13 +473,24 @@ class Ui_MainWindow(object):
     def get_output_format_value(self):
         return self.comboBox_8.currentText()
 
+    @staticmethod
+    def start_gui():
+        import sys
+
+        app = QtWidgets.QApplication(sys.argv)
+        MainWindow = QtWidgets.QMainWindow()
+        ui = QT_GUI()
+        ui.setupUi(MainWindow)
+        MainWindow.show()
+        sys.exit(app.exec_())
+
 
 if __name__ == "__main__":
     import sys
 
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = QT_GUI()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

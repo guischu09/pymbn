@@ -12,33 +12,15 @@ import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
-class Setup:
-    alpha: float
-    theta: float
-    threshold: float
-    weights: str
-    correction_type: str
-    criteria_representation: str
-    data_balance: str
-    n_samples_measures: int
-    plot_3d: bool
-    brain_type: str
-    which_plot: str
-    output_format: str
-    mbn_method: str
-    probability_treshold: float
-    n_samples: int
-    random_type: str
-    interactive: bool
-    seed: int
+from .base_classes import Setup
 
 
 class QTGUI(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(789, 743)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.MainWindow = MainWindow
+        self.MainWindow.setObjectName("MainWindow")
+        self.MainWindow.resize(789, 743)
+        self.centralwidget = QtWidgets.QWidget(self.MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(80, 0, 241, 41))
@@ -55,12 +37,12 @@ class QTGUI(object):
 
         self.pushButton = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.pushButton.setObjectName("pushButton")
-        self.pushButton.clicked.connect(self.ok_button_clicked)
+        self.pushButton.clicked.connect(self.get_parameters)
         self.horizontalLayout_2.addWidget(self.pushButton)
 
         self.pushButton_2 = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.pushButton_2.setObjectName("pushButton_2")
-        self.pushButton_2.clicked.connect(self.cancel_button_clicked)
+        self.pushButton_2.clicked.connect(self.exit_button_clicked)
         self.horizontalLayout_2.addWidget(self.pushButton_2)
 
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -81,20 +63,17 @@ class QTGUI(object):
         self.comboBox_7.setObjectName("comboBox_7")
         self.comboBox_7.addItem("")
         self.comboBox_7.addItem("")
-        self.comboBox_7.currentIndexChanged.connect(
-            self.get_mbn_construction_method_value(self.comboBox_7.currentIndex())
-        )
+        self.comboBox_7.currentIndexChanged.connect(self.get_mbn_construction_method_value)
 
         self.horizontalLayout_28.addWidget(self.comboBox_7)
+
         self.verticalLayout.addWidget(self.mbn_construction_box)
         self.alpha_box = QtWidgets.QGroupBox(self.verticalLayoutWidget)
         self.alpha_box.setObjectName("alpha_box")
         self.horizontalLayout_26 = QtWidgets.QHBoxLayout(self.alpha_box)
         self.horizontalLayout_26.setObjectName("horizontalLayout_26")
-
         self.label_23 = QtWidgets.QLabel(self.alpha_box)
         self.label_23.setObjectName("label_23")
-
         self.horizontalLayout_26.addWidget(self.label_23)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_26.addItem(spacerItem)
@@ -102,8 +81,8 @@ class QTGUI(object):
         self.lineEdit_12 = QtWidgets.QLineEdit(self.alpha_box)
         self.lineEdit_12.setObjectName("lineEdit_12")
         self.lineEdit_12.textChanged.connect(self.get_alpha_value)
-
         self.horizontalLayout_26.addWidget(self.lineEdit_12)
+
         self.verticalLayout.addWidget(self.alpha_box)
         self.theta_box = QtWidgets.QGroupBox(self.verticalLayoutWidget)
         self.theta_box.setObjectName("theta_box")
@@ -118,8 +97,8 @@ class QTGUI(object):
         self.lineEdit_11 = QtWidgets.QLineEdit(self.theta_box)
         self.lineEdit_11.setObjectName("lineEdit_11")
         self.lineEdit_11.textChanged.connect(self.get_theta_value)
-
         self.horizontalLayout_25.addWidget(self.lineEdit_11)
+
         self.verticalLayout.addWidget(self.theta_box)
         self.threshold_box = QtWidgets.QGroupBox(self.verticalLayoutWidget)
         self.threshold_box.setObjectName("threshold_box")
@@ -134,8 +113,8 @@ class QTGUI(object):
         self.lineEdit_10 = QtWidgets.QLineEdit(self.threshold_box)
         self.lineEdit_10.setObjectName("lineEdit_10")
         self.lineEdit_10.textChanged.connect(self.get_threshold_value)
-
         self.horizontalLayout_24.addWidget(self.lineEdit_10)
+
         self.verticalLayout.addWidget(self.threshold_box)
         self.weights_box = QtWidgets.QGroupBox(self.verticalLayoutWidget)
         self.weights_box.setObjectName("weights_box")
@@ -243,7 +222,7 @@ class QTGUI(object):
 
         self.checkBox = QtWidgets.QCheckBox(self.sample_measures_box)
         self.checkBox.setObjectName("checkBox")
-        self.checkBox.setChecked(True)
+        self.checkBox.setChecked(False)
         self.checkBox.stateChanged.connect(self.sample_measures_is_checked)
 
         self.horizontalLayout_20.addWidget(self.checkBox)
@@ -255,9 +234,11 @@ class QTGUI(object):
 
         self.lineEdit_8 = QtWidgets.QLineEdit(self.sample_measures_box)
         self.lineEdit_8.setObjectName("lineEdit_8")
-        self.lineEdit_8.textChanged.connect(self.get_sample_measures_value)
+        self.lineEdit_8.setEnabled(True)
+        self.lineEdit_8.textChanged.connect(self.get_n_sample_measures)
 
         self.horizontalLayout_20.addWidget(self.lineEdit_8)
+
         self.verticalLayout.addWidget(self.sample_measures_box)
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(400, 40, 381, 151))
@@ -284,12 +265,14 @@ class QTGUI(object):
         self.checkBox_7.setObjectName("checkBox_7")
         self.checkBox_7.setEnabled(False)
         self.checkBox_7.stateChanged.connect(self.plot_3d_interactive_is_checked)
-
         self.verticalLayout_4.addWidget(self.checkBox_7)
+
         self.verticalLayout_2.addLayout(self.verticalLayout_4)
+
         self.brain_type_box = QtWidgets.QGroupBox(self.verticalLayoutWidget_2)
         self.brain_type_box.setObjectName("brain_type_box")
         self.horizontalLayout_18 = QtWidgets.QHBoxLayout(self.brain_type_box)
+
         self.horizontalLayout_18.setObjectName("horizontalLayout_18")
         self.label_15 = QtWidgets.QLabel(self.brain_type_box)
         self.label_15.setObjectName("label_15")
@@ -301,6 +284,7 @@ class QTGUI(object):
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
+        self.comboBox.setEnabled(False)
         self.comboBox.currentIndexChanged.connect(self.get_brain_type_value)
 
         self.horizontalLayout_18.addWidget(self.comboBox)
@@ -323,13 +307,16 @@ class QTGUI(object):
         self.checkBox_8 = QtWidgets.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox_8.setObjectName("checkBox_8")
         self.checkBox_8.setChecked(True)
+        self.checkBox_8.setEnabled(False)
+        self.checkBox_8.stateChanged.connect(self.get_plot_heatmap_value)
         self.verticalLayout_5.addWidget(self.checkBox_8)
 
         self.checkBox_9 = QtWidgets.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox_9.setObjectName("checkBox_9")
         self.checkBox_9.setChecked(True)
-
+        self.checkBox_9.stateChanged.connect(self.get_plot_circle_value)
         self.verticalLayout_5.addWidget(self.checkBox_9)
+
         self.verticalLayout_3.addLayout(self.verticalLayout_5)
         self.Output_format_box = QtWidgets.QGroupBox(self.verticalLayoutWidget_3)
         self.Output_format_box.setObjectName("Output_format_box")
@@ -340,12 +327,15 @@ class QTGUI(object):
         self.horizontalLayout_19.addWidget(self.label_26)
         spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_19.addItem(spacerItem6)
+
         self.comboBox_8 = QtWidgets.QComboBox(self.Output_format_box)
         self.comboBox_8.setObjectName("comboBox_8")
         self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
+        self.comboBox_8.currentIndexChanged.connect(self.get_output_format_value)
+
         self.horizontalLayout_19.addWidget(self.comboBox_8)
         self.verticalLayout_3.addWidget(self.Output_format_box)
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
@@ -354,21 +344,21 @@ class QTGUI(object):
         font.setPointSize(14)
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.MainWindow.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(self.MainWindow)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        self.MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self.MainWindow)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Settings"))
+        self.MainWindow.setWindowTitle(_translate("MainWindow", "Settings"))
         self.label.setText(_translate("MainWindow", "MS-scheme parameters:"))
-        self.pushButton.setText(_translate("MainWindow", "OK"))
-        self.pushButton_2.setText(_translate("MainWindow", "Cancel"))
-        self.label_27.setText(_translate("MainWindow", "construction method: "))
+        self.pushButton.setText(_translate("MainWindow", "Set parameters"))
+        self.pushButton_2.setText(_translate("MainWindow", "Exit"))
+        self.label_27.setText(_translate("MainWindow", "MBN construction method: "))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "ms-scheme"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "conventional"))
         self.label_23.setText(_translate("MainWindow", "alpha:"))
@@ -401,7 +391,7 @@ class QTGUI(object):
         self.label_17.setText(_translate("MainWindow", "(number measures)"))
         self.lineEdit_8.setText(_translate("MainWindow", "30"))
         self.label_3.setText(_translate("MainWindow", "3D brain plot:"))
-        self.checkBox_6.setText(_translate("MainWindow", "plot 3D"))
+        self.checkBox_6.setText(_translate("MainWindow", "Plot 3D"))
         self.checkBox_7.setText(_translate("MainWindow", "3D interactive"))
         self.label_15.setText(_translate("MainWindow", "brain type:"))
         self.comboBox.setItemText(0, _translate("MainWindow", "human"))
@@ -416,21 +406,40 @@ class QTGUI(object):
         self.comboBox_8.setItemText(3, _translate("MainWindow", "pdf"))
         self.label_4.setText(_translate("MainWindow", "Plotting options:"))
 
-    def get_mbn_construction_method_value(self, index):
-        # Slot function to handle changes in the MBN construction method
-        selected_method = self.comboBox_7.itemText(index)
-        if selected_method == "conventional":
-            # If "conventional" method is selected, disable the "Number of samples" field
-            self.comboBox_5.setEnabled(False)
-        else:
-            # If "ms-scheme" method is selected (or any other method), enable the field
-            self.comboBox_5.setEnabled(True)
-
-    def cancel_button_clicked(self):
+    def exit_button_clicked(self):
         QtWidgets.QApplication.quit()
 
-    def ok_button_clicked(self):
-        pass
+    def get_parameters(self):
+        self.setup = Setup(
+            mbn_method=self.get_mbn_construction_method_value(),
+            alpha=self.get_alpha_value(),
+            theta=self.get_theta_value(),
+            threshold=self.get_threshold_value(),
+            weights=self.get_weights_value(),
+            correction_type=self.get_correction_type_value(),
+            sampling_type=self.get_sampling_type_value(),
+            n_samples=self.get_n_samples_value(),
+            criteria_representation=self.get_criteria_representation_value(),
+            data_balance=self.get_data_balance_value(),
+            n_samples_measures=self.get_n_sample_measures(),
+            plot_3d=self.plot_3d_is_checked,
+            interactive=self.plot_3d_interactive_is_checked(),
+            brain_type=self.get_brain_type_value(),
+            plot_heatmap=self.get_plot_heatmap_value(),
+            plot_circle=self.get_plot_circle_value(),
+            output_format=self.get_output_format_value(),
+            probability_treshold=self.get_probability_treshold(),
+            seed=13,
+        )
+        # close window
+        self.MainWindow.close()
+
+    @staticmethod
+    def get_probability_treshold():
+        return 0.95
+
+    def get_mbn_construction_method_value(self):
+        return self.comboBox_7.currentText()
 
     def get_alpha_value(self):
         return self.lineEdit_12.text()
@@ -459,33 +468,33 @@ class QTGUI(object):
     def get_data_balance_value(self):
         return self.comboBox_6.currentText()
 
-    def sample_measures_is_checked(self, state):
-        if state == QtCore.Qt.Checked:
+    def get_n_sample_measures(self):
+        return self.lineEdit_8.text()
+
+    def sample_measures_is_checked(self):
+        if self.checkBox.isChecked():
             self.lineEdit_8.setEnabled(True)
         else:
             self.lineEdit_8.setEnabled(False)
 
-    def get_sample_measures_value(self):
-        return self.lineEdit_8.text()
-
-    def get_brain_type_value(self):
-        return self.comboBox.currentText()
-
-    def plot_3d_is_checked(self, state):
+    def plot_3d_is_checked(self):
         # Slot function to handle changes in the "Plot 3D" checkbox state
-        if state == QtCore.Qt.Checked:
+        if self.checkBox_6.isChecked():
             # If "Plot 3D" is checked, enable the "3D interactive" checkbox
             self.checkBox_7.setEnabled(True)
+            self.comboBox.setEnabled(True)
             return True
         else:
             # If "Plot 3D" is not checked, disable the "3D interactive" checkbox
             self.checkBox_7.setEnabled(False)
+            self.comboBox.setEnabled(False)
             return False
 
-    def plot_3d_interactive_is_checked(self, state):
-        # get if the "3D interactive" checkbox is checked
-        if state == QtCore.Qt.Checked:
+    def plot_3d_interactive_is_checked(self):
+        if self.checkBox_7.isChecked():
             return True
+        else:
+            return False
 
     def get_brain_type_value(self):
         return self.comboBox.currentText()
@@ -506,15 +515,16 @@ class QTGUI(object):
         ui = QTGUI()
         ui.setupUi(MainWindow)
         MainWindow.show()
-        sys.exit(app.exec_())
+        app.exec_()
+        return ui
 
 
-if __name__ == "__main__":
-    import sys
+# if __name__ == "__main__":
+# import sys
 
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = QTGUI()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+# app = QtWidgets.QApplication(sys.argv)
+# MainWindow = QtWidgets.QMainWindow()
+# ui = QTGUI()
+# ui.setupUi(MainWindow)
+# MainWindow.show()
+# sys.exit(app.exec_())
