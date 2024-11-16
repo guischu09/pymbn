@@ -18,9 +18,6 @@ def main():
     # Build MBNs
     group_networks, multiple_networks = build_network(data, setup)
 
-    # Graph measures
-    compute_graph_measures(multiple_networks, data, setup)
-
     # Generate and save heatmaps:
     plot_networks_heatmaps(data, group_networks, labels, output_format="svg")
 
@@ -36,7 +33,7 @@ def main():
         coords,
         brain_type=setup.brain_type,
         output_format="png",
-        interactive=False,
+        interactive=True,
     )
 
 

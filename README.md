@@ -1,42 +1,55 @@
-# README #
+# PyMBN: Python Multiple-Sampling Brain Networks 🧠
 
-### Repository Description ###
+[![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3100/)
 
-This repository contains an under development full python implementation of the Multiple Sampling (MS) scheme for contructing stable Metabolic Brain Networks proposed at: https://doi.org/10.1101/2021.03.16.435674
+PyMBN is a Python implementation of the Multiple Sampling (MS) scheme for constructing stable Metabolic Brain Networks, as proposed in our [research paper](https://doi.org/10.1101/2021.03.16.435674).
 
-### Setup ###
-**Python setup (using Miniconda/Anaconda):**
 
-1. If you do not have Miniconda/Anaconda installed, go to [https://docs.conda.io/en/latest/miniconda.html](https://docs.conda.io/en/latest/miniconda.html) and download it.
 
-2. Clone/download this repository.
+## 🚀 Features
 
-3. Open a terminal and navigate to the cloned/downloaded folder. Afterwards, type the following command:
+- Multiple Sampling scheme implementation for stable network construction
+- Graph theoretical measures computation [WIP]
+- Network visualization tools
+- Statistical analysis utilities
 
-> conda create -n pymbn python=3.10 pip
+![Network Visualization](.figs/outputs.png)
 
-4. Now, install the dependencies with the following commands:
 
-> conda activate pymbn
-> pip install -r requirements.txt --no-deps
+## 🔧 Installation
 
-5. You may need to install the follwing packages:
-> sudo apt-get install python3-pyqt5.qtsvg libxcb-xinerama0
+1. **Set up Conda Environment**
+```bash
+# Create and activate conda environment
+conda create -n pymbn python=3.10 pip
+conda activate pymbn
 
-### Running ###
+# Install dependencies
+pip install -r requirements.txt --no-deps
+```
 
-1. Open a terminal and navigate to the cloned/downloaded folder. Afterwards, type the following commands:
-> conda activate pymbn
-2. Generate results running the main scrpit:
-> python main.py
+2. **Install System Dependencies** (Ubuntu/Debian)
+```bash
+sudo apt-get install python3-pyqt5.qtsvg libxcb-xinerama0
+```
 
-Check the obtained results at the results and outputs created directories.
+## 💻 Usage
 
-### Methods ###
+1. **Activate Environment**
+```bash
+conda activate pymbn
+```
 
-Check our paper for the details: Stable brain PET metabolic networks using a multiple sampling scheme - https://doi.org/10.1101/2021.03.16.435674
+2. **Run Analysis**
+```bash
+python main.py
+```
 
-### Contact ###
+Results will be available in the `results/` and `outputs/` directories.
 
-guischu09@gmail.com - Guilherme Schu
 
+## 📖 Methods
+For detailed methodology, please refer to our paper: [Stable brain PET metabolic networks using a multiple sampling scheme](https://doi.org/10.1101/2021.03.16.435674)
+
+## 📬 Contact
+Guilherme Schu - guischu09@gmail.com
