@@ -68,10 +68,8 @@ class NetworkPlotter:
             plot_heatmap(network=network, labels=self.labels_path, output_path=output_path, v_min=self.v_min)
 
     def plot_networks_2d(
-        self, facecolor: str = "white", textcolor: str = "black", cmap: str = "turbo", interactive: bool = None
+        self, facecolor: str = "white", textcolor: str = "black", cmap: str = "turbo", interactive: bool = False
     ) -> None:
-        if interactive is None:
-            interactive = self.setup.interactive
 
         for g, group in enumerate(self.group_names):
             network = self.networks[:, :, g]
@@ -92,9 +90,7 @@ class NetworkPlotter:
             fig.savefig(output_path, facecolor=facecolor)
             plt.close()
 
-    def plot_networks_brain3d(self, cmap: str = "turbo", interactive: bool = None):
-        if interactive is None:
-            interactive = self.setup.interactive
+    def plot_networks_brain3d(self, cmap: str = "turbo", interactive: bool = False):
 
         for g, group in enumerate(self.group_names):
             network = self.networks[:, :, g]

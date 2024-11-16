@@ -13,9 +13,12 @@ This repository contains an under development full python implementation of the 
 
 3. Open a terminal and navigate to the cloned/downloaded folder. Afterwards, type the following command:
 
-> conda env create -f environment.yml
+> conda create -n pymbn python=3.10 pip
 
-4. Done!
+4. Now, install the dependencies with the following commands:
+
+> conda activate pymbn
+> pip install -r requirements.txt --no-deps
 
 ### Running ###
 

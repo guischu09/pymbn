@@ -33,7 +33,7 @@ def main():
 
     plotter.plot_networks_heatmaps()
     plotter.plot_networks_2d(interactive=True)
-    plotter.plot_networks_brain3d(interactive=True)
+    plotter.plot_networks_brain3d(interactive=False)
 
 
 if __name__ == "__main__":

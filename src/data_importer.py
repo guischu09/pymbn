@@ -6,9 +6,6 @@ import pandas as pd
 from .base_classes import Setup
 from .ui_parser import TkInput as DataParser
 
-# from imblearn.over_sampling import ADASYN
-
-
 PetData = NewType("PetData", List[Tuple[np.array, str]])
 
 
