@@ -17,6 +17,28 @@ from skimage import measure
 
 from .base_classes import Setup
 from .data_importer import PetData
+import logging
+
+
+def get_output_dir(clobber: bool = False):
+    output_dir = os.path.join(os.getcwd(), "outputs")
+    if clobber and os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+    os.makedirs(output_dir, exist_ok=True)
+    return output_dir
+
+
+def get_results_dir(clobber: bool = False):
+    results_dir = os.path.join(os.getcwd(), "results")
+    if clobber and os.path.exists(results_dir):
+        shutil.rmtree(results_dir)
+    os.makedirs(results_dir, exist_ok=True)
+    return results_dir
+
+
+RESULTS_DIR = get_results_dir(clobber=False)
+OUTPUT_DIR = get_output_dir(clobber=False)
+NODE_SIZE_CTE = 1
 
 
 class NetworkPlotter:
@@ -65,7 +87,9 @@ class NetworkPlotter:
         for g, group in enumerate(self.group_names):
             network = self.networks[:, :, g]
             output_path = os.path.join(self.results_dir, f"{group}_heatmap.{self.setup.output_format}")
+            logging.info(f">> Plotting heatmap for group {group}")
             plot_heatmap(network=network, labels=self.labels_path, output_path=output_path, v_min=self.v_min)
+            logging.info(f">> Heatmap saved to {output_path}")
 
     def plot_networks_2d(
         self, facecolor: str = "white", textcolor: str = "black", cmap: str = "turbo", interactive: bool = False
@@ -116,7 +140,10 @@ class NetworkPlotter:
         self.v_min = min(unique_set)
 
 
-NODE_SIZE_CTE = 1
+def get_vmin(networks: np.ndarray) -> float:
+    unique_set = set(networks.ravel())
+    unique_set.remove(0)
+    return min(unique_set)
 
 
 def get_coords_dict(coords_path: str) -> dict:
@@ -126,6 +153,74 @@ def get_coords_dict(coords_path: str) -> dict:
     for k in range(coords.shape[0]):
         coordinates[coords.iloc[k, 0]] = np.array([coords.iloc[k, 1], coords.iloc[k, 2], coords.iloc[k, 3]])
     return coordinates
+
+
+def get_group_names(data: PetData) -> list[str]:
+    group_names = []
+    for d in data:
+        group_names.append(d[1])
+    return group_names
+
+
+def plot_networks_2d(
+    data: PetData,
+    networks: np.ndarray,
+    labels_path: str,
+    output_format: str = ".png",
+    interactive: bool = False,
+    min_value: float = None,
+    color_map: str = "turbo",
+    results_dir: str = RESULTS_DIR,
+    facecolor: str = "white",
+    textcolor: str = "black",
+) -> None:
+
+    if min_value is None:
+        min_value = get_vmin(networks)
+
+    group_names = get_group_names(data)
+
+    for g, group in enumerate(group_names):
+        network = networks[:, :, g]
+        network = network - np.eye(network.shape[0])
+        output_path = os.path.join(results_dir, f"{group}_circle_plot.{output_format}")
+        labels = list(pd.read_csv(labels_path, header=None)[0])
+        fig, _ = plot_connectivity_circle(
+            con=network,
+            node_names=labels,
+            colormap=color_map,
+            vmin=min_value,
+            vmax=1,
+            colorbar=True,
+            facecolor=facecolor,
+            textcolor=textcolor,
+            show=interactive,
+        )
+        fig.savefig(output_path, facecolor=facecolor)
+        plt.close()
+
+
+def plot_networks_heatmaps(
+    data: PetData,
+    networks: np.ndarray,
+    labels_path: str,
+    output_format: str = "png",  # png, pdf, svg
+    color_map: str = "turbo",
+    min_value: float = None,
+    results_dir: str = RESULTS_DIR,
+) -> None:
+
+    if min_value is None:
+        min_value = get_vmin(networks)
+
+    group_names = get_group_names(data)
+
+    for g, group in enumerate(group_names):
+        network = networks[:, :, g]
+        output_path = os.path.join(results_dir, f"{group}_heatmap.{output_format}")
+        logging.info(f">> Plotting heatmap for group {group}")
+        plot_heatmap(network=network, labels=labels_path, output_path=output_path, v_min=min_value, cmap=color_map)
+        logging.info(f">> Heatmap image saved to {output_path}")
 
 
 def plot_heatmap(

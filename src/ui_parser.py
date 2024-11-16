@@ -4,6 +4,10 @@ import tkinter as tk
 from tkinter import filedialog
 
 from .base_classes import InputHelper, Setup, SetupHelper
+import logging
+
+
+logging.basicConfig(level=logging.INFO)
 
 
 class TkInput(InputHelper):
