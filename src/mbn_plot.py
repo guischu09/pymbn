@@ -178,6 +178,9 @@ def plot_networks_3d(
 
     output_format = output_format.lstrip(".").lower()
 
+    if min_value is None:
+        min_value = get_vmin(networks)
+
     if output_format != "png":
         logging.warning("3D plots are only available in png format.")
 
