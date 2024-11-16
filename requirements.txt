@@ -14,7 +14,7 @@ mayavi==4.8.2
 mne==1.8.0
 mne-connectivity==0.7.0
 nibabel==5.3.2
-numpy==1.23.0
+numpy==1.23.5
 packaging==24.2
 pandas==2.2.3
 patsy==1.0.1

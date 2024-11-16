@@ -20,6 +20,9 @@ This repository contains an under development full python implementation of the 
 > conda activate pymbn
 > pip install -r requirements.txt --no-deps
 
+5. You may need to install the follwing packages:
+> sudo apt-get install python3-pyqt5.qtsvg libxcb-xinerama0
+
 ### Running ###
 
 1. Open a terminal and navigate to the cloned/downloaded folder. Afterwards, type the following commands:

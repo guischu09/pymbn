@@ -4,7 +4,7 @@ from src.data_importer import data_import
 from src.mbn_builder import build_network
 from src.mbn_measures import compute_graph_measures
 from src.ui_parser import ManualSetup as SetupParser
-from src.mbn_plot import plot_networks_heatmaps, plot_networks_2d
+from src.mbn_plot import plot_networks_heatmaps, plot_networks_2d, plot_networks_3d, NetworkPlotter
 
 
 def main():
@@ -21,24 +21,23 @@ def main():
     # Graph measures
     compute_graph_measures(multiple_networks, data, setup)
 
-    # Generate and save plots:
+    # Generate and save heatmaps:
     plot_networks_heatmaps(data, group_networks, labels, output_format="svg")
 
-    plot_networks_2d(data, group_networks, labels, output_format="svg", interactive=True)
+    # Generate and save circle plots:
+    plot_networks_2d(data, group_networks, labels, output_format="svg", interactive=False)
 
-    # # Make plots
-    # plotter = NetworkPlotter(
-    #     networks=group_networks,
-    #     data=data,
-    #     labels_path=labels,
-    #     atlas_path=atlas,
-    #     coords_path=coords,
-    #     setup=setup,
-    # )
-
-    # plotter.plot_networks_heatmaps()
-    # plotter.plot_networks_2d(interactive=True)
-    # plotter.plot_networks_brain3d(interactive=False)
+    # Generate and save 3d brain plots:
+    plot_networks_3d(
+        data,
+        group_networks,
+        labels,
+        atlas,
+        coords,
+        brain_type=setup.brain_type,
+        output_format="png",
+        interactive=False,
+    )
 
 
 if __name__ == "__main__":

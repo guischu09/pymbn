@@ -11,6 +11,7 @@ from .mbn_statistics import (
     multiple_comparison_correction,
     threshold_correction,
 )
+import logging
 
 
 def compute_ms(data: PetData, setup: Setup) -> MSComputations:
@@ -62,10 +63,10 @@ def sample_data(data_group: tuple, setup: Setup) -> Tuple[np.ndarray, np.ndarray
 
     n_rows = data_group[0].shape[0]
 
+    logging.info(f">> Generating {setup.n_samples} {setup.random_type} samples for group {data_group[1]}")
     # Generate multiple networks
     for k in tqdm(range(setup.n_samples)):
         new_rows = gen_rows(setup, n_rows)
-        # gen_data = data_group[0][np.sort(new_rows),:]
         gen_data = data_group[0][new_rows, :]
 
         # Compute network weights (e.g Peason correlation)

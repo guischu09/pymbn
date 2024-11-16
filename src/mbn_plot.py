@@ -162,11 +162,51 @@ def get_group_names(data: PetData) -> list[str]:
     return group_names
 
 
+def plot_networks_3d(
+    data: PetData,
+    networks: np.ndarray,
+    labels_path: str,
+    atlas_path: str,
+    coords_path: str,
+    brain_type: str,
+    output_format: str = "png",
+    interactive: bool = False,
+    min_value: float = None,
+    color_map: str = "turbo",
+    results_dir: str = RESULTS_DIR,
+):
+
+    output_format = output_format.lstrip(".").lower()
+
+    if output_format != "png":
+        logging.warning("3D plots are only available in png format.")
+
+    group_names = get_group_names(data)
+
+    for g, group in enumerate(group_names):
+        network = networks[:, :, g]
+        output_path = os.path.join(results_dir, f"{group}_brain.{output_format}")
+
+        plot_3d(
+            atlas=atlas_path,
+            labels=labels_path,
+            coordinates=coords_path,
+            network=network,
+            brain_type=brain_type,
+            output_path=output_path,
+            v_min=min_value,
+            cmap=color_map,
+            interactive=interactive,
+        )
+    if interactive:
+        sys.exit(0)
+
+
 def plot_networks_2d(
     data: PetData,
     networks: np.ndarray,
     labels_path: str,
-    output_format: str = ".png",
+    output_format: str = "png",  # png, pdf, svg
     interactive: bool = False,
     min_value: float = None,
     color_map: str = "turbo",
@@ -174,6 +214,8 @@ def plot_networks_2d(
     facecolor: str = "white",
     textcolor: str = "black",
 ) -> None:
+
+    output_format = output_format.lstrip(".").lower()
 
     if min_value is None:
         min_value = get_vmin(networks)
@@ -210,6 +252,8 @@ def plot_networks_heatmaps(
     results_dir: str = RESULTS_DIR,
 ) -> None:
 
+    output_format = output_format.lstrip(".").lower()
+
     if min_value is None:
         min_value = get_vmin(networks)
 
@@ -218,7 +262,6 @@ def plot_networks_heatmaps(
     for g, group in enumerate(group_names):
         network = networks[:, :, g]
         output_path = os.path.join(results_dir, f"{group}_heatmap.{output_format}")
-        logging.info(f">> Plotting heatmap for group {group}")
         plot_heatmap(network=network, labels=labels_path, output_path=output_path, v_min=min_value, cmap=color_map)
         logging.info(f">> Heatmap image saved to {output_path}")
 
