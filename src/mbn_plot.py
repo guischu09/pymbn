@@ -20,7 +20,7 @@ from .data_importer import PetData
 import logging
 
 
-def get_output_dir(clobber: bool = False):
+def get_output_dir(clobber: bool = False) -> str:
     output_dir = os.path.join(os.getcwd(), "outputs")
     if clobber and os.path.exists(output_dir):
         shutil.rmtree(output_dir)
@@ -28,7 +28,7 @@ def get_output_dir(clobber: bool = False):
     return output_dir
 
 
-def get_results_dir(clobber: bool = False):
+def get_results_dir(clobber: bool = False) -> str:
     results_dir = os.path.join(os.getcwd(), "results")
     if clobber and os.path.exists(results_dir):
         shutil.rmtree(results_dir)
@@ -174,7 +174,7 @@ def plot_networks_3d(
     min_value: float = None,
     color_map: str = "turbo",
     results_dir: str = RESULTS_DIR,
-):
+) -> None:
 
     output_format = output_format.lstrip(".").lower()
 

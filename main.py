@@ -2,9 +2,8 @@ import numpy as np
 
 from src.data_importer import data_import
 from src.mbn_builder import build_network
-from src.mbn_measures import compute_graph_measures
 from src.ui_parser import ManualSetup as SetupParser
-from src.mbn_plot import plot_networks_heatmaps, plot_networks_2d, plot_networks_3d, NetworkPlotter
+from src.mbn_plot import plot_networks_heatmaps, plot_networks_2d, plot_networks_3d
 
 
 def main():
@@ -33,7 +32,7 @@ def main():
         coords,
         brain_type=setup.brain_type,
         output_format="png",
-        interactive=True,
+        interactive=False,
     )
 
 
