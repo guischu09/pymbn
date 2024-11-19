@@ -3,6 +3,7 @@ from typing import Tuple
 import numpy as np
 from scipy.stats import pearsonr
 from statsmodels.stats.multitest import multipletests
+from scipy import stats
 
 from .base_classes import Setup
 
@@ -38,20 +39,23 @@ def compute_network_weights(data: np.ndarray, setup: Setup) -> Tuple[np.ndarray,
 
 
 def pearson_correlation(array: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-    n_cols = array.shape[1]
-    correlations = np.zeros((n_cols, n_cols))
-    pvalues = np.zeros((n_cols, n_cols))
+    """Vectorized implementation using scipy and matrix operations"""
+    n_rows, n_cols = array.shape
 
-    for i in range(n_cols):
-        for j in range(i, n_cols):
-            if i == j:
-                correlations[i, j] = 1
-                pvalues[i, j] = 1
-            else:
-                corr, pval = pearsonr(array[:, i], array[:, j])
-                correlations[i, j] = corr
-                correlations[j, i] = corr
-                pvalues[i, j] = pval
-                pvalues[j, i] = pval
+    # Standardize the data
+    standardized = (array - array.mean(axis=0)) / array.std(axis=0, ddof=1)
+
+    # Compute correlation matrix
+    correlations = (standardized.T @ standardized) / (n_rows - 1)
+
+    # Compute t-statistic
+    t_stat = correlations * np.sqrt((n_rows - 2) / (1 - correlations**2))
+
+    # Compute p-values
+    pvalues = 2 * (1 - stats.t.cdf(np.abs(t_stat), n_rows - 2))
+
+    # Fix diagonal values
+    np.fill_diagonal(correlations, 1.0)
+    np.fill_diagonal(pvalues, 1.0)
 
     return correlations, pvalues

@@ -18,10 +18,10 @@ def main():
     group_networks, multiple_networks = build_network(data, setup)
 
     # Generate and save heatmaps:
-    plot_networks_heatmaps(data, group_networks, labels, output_format="svg")
+    plot_networks_heatmaps(data, group_networks, labels, output_format="png")
 
     # Generate and save circle plots:
-    plot_networks_2d(data, group_networks, labels, output_format="svg", interactive=False)
+    plot_networks_2d(data, group_networks, labels, output_format="png", interactive=False)
 
     # Generate and save 3d brain plots:
     plot_networks_3d(
